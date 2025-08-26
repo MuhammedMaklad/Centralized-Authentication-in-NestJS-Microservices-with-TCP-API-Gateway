@@ -1,39 +1,58 @@
-# Builder stage
-FROM node:alpine AS builder
+# Add this stage to your Dockerfile
+FROM node:alpine AS development
 
 WORKDIR /usr/src/app
 
-# Copy package files and install dependencies
 COPY package*.json ./
 COPY tsconfig.json .
 COPY nest-cli.json .
-RUN npm install
 
-# Copy source code
-COPY apps/auth-service ./apps/auth-service
-COPY tsconfig.build.json .
+RUN npm install  # Includes dev dependencies
+
+COPY . .
+
+# Note: We don't build here, we let the live reload handle it
+# docker-compose will map the current code via volumes
+
+CMD ["npm", "run", "start:dev", "auth-service"]
+
+# Builder stage
+# FROM node:alpine AS builder
+
+# WORKDIR /usr/src/app
+
+# # Copy package files and install dependencies
+# COPY package*.json ./
+# COPY tsconfig.json .
+# COPY nest-cli.json .
+# RUN npm install
+
+# # Copy source code
+# COPY apps/auth-service ./apps/auth-service
+# COPY tsconfig.build.json .
 
 
-# Build the auth-service application
-RUN npm run build auth-service
+# # Build the auth-service application
+# RUN npm run build auth-service
 
-# Production stage
-FROM node:alpine AS production
+# # Production stage
+# FROM node:alpine AS production
 
-ARG NODE_ENV=production
-ENV NODE_ENV=${NODE_ENV}
+# ARG NODE_ENV=production
+# ENV NODE_ENV=${NODE_ENV}
 
-WORKDIR /usr/src/app
+# WORKDIR /usr/src/app
 
-# Copy package files and install only production dependencies
-COPY package*.json ./
-RUN npm install --only=production
+# # Copy package files and install only production dependencies
+# COPY package*.json ./
+# RUN npm install --only=production
 
-# Copy built application from builder stage
-COPY --from=builder /usr/src/app/dist ./dist
+# # COPY source dest
+# # Copy built application from builder stage
+# COPY --from=builder /usr/src/app/dist ./dist
 
-# Expose the port the app runs on
-EXPOSE 3000
+# # Expose the port the app runs on
+# EXPOSE 3000
 
-# Command to run the application
-CMD [ "node", "dist/apps/auth-service/main" ]
+# # Command to run the application
+# CMD [ "node", "dist/apps/auth-service/main" ]

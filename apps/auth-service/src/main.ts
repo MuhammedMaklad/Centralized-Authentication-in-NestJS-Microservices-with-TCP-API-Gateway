@@ -13,6 +13,6 @@ async function bootstrap() {
   const port = process.env.PORT ?? 3000;
   await app.listen(port);
 
-  Logger.log(`Auth Service is Running on Port ${port}`);
+  Logger.log(`Auth Service is Running on Port http://localhost:3001/api/${port}`);
 }
 bootstrap().catch(e => Logger.error(`Error While Bootstrap auth service ${e}`));
