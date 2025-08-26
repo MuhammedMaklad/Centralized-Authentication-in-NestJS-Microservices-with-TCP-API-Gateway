@@ -3,7 +3,7 @@
   "collection": "@nestjs/schematics",
   "sourceRoot": "apps/centralized-authentication-in-nest-js-microservices/src",
   "compilerOptions": {
-    "deleteOutDir": true,
+    "deleteOutDir": false,
     "webpack": true,
     "tsConfigPath": "apps/centralized-authentication-in-nest-js-microservices/tsconfig.app.json"
   },
@@ -26,15 +26,6 @@
       "sourceRoot": "apps/auth-service/src",
       "compilerOptions": {
         "tsConfigPath": "apps/auth-service/tsconfig.app.json"
-      }
-    },
-    "centralized-authentication-in-nest-js-microservices": {
-      "type": "application",
-      "root": "apps/centralized-authentication-in-nest-js-microservices",
-      "entryFile": "main",
-      "sourceRoot": "apps/centralized-authentication-in-nest-js-microservices/src",
-      "compilerOptions": {
-        "tsConfigPath": "apps/centralized-authentication-in-nest-js-microservices/tsconfig.app.json"
       }
     },
     "user-service": {

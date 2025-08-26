@@ -13,7 +13,6 @@ export class ApiGatewayController {
 
   @Post("login")
   async login(@Body() body: LoginRequest) {
-
   }
 
 }

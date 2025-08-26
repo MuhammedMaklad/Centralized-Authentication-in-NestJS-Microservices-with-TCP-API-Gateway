@@ -1,0 +1,49 @@
+services:
+  api-gateway:
+    container_name: api-gateway-container
+    build:
+      context: .
+      dockerfile: apps/api-gateway/Dockerfile
+      target: builder
+    ports:
+      - '3000:3000'
+    command: npm run start:dev api-gateway
+    networks:
+      - app-network
+    volumes:
+      - .:/usr/src/app
+      - /usr/src/app/node_modules # ensure that node-modules aren't overwritten by bind
+
+  auth-service:
+    container_name: auth-service-container
+    build:
+      context: .
+      dockerfile: apps/auth-service/Dockerfile
+      target: builder
+    ports:
+      - '3001:3000'
+    networks:
+      - app-network
+    volumes:
+      - .:/usr/src/app
+      - /usr/src/app/node_modules
+    command: npm run start:dev auth-service
+
+  user-service:
+    container_name: user-service-container
+    build:
+      context: .
+      dockerfile: apps/user-service/Dockerfile
+      target: builder
+    ports:
+      - '3002:3000'
+    networks:
+      - app-network
+    volumes:
+      - .:/usr/src/app
+      - /usr/src/app/node_modules
+    command: npm run start:dev user-service
+
+networks:
+  app-network:
+    driver: bridge
