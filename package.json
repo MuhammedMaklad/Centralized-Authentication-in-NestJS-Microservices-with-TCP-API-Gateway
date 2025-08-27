@@ -14,6 +14,10 @@
     "start:dev:auth-service": "nest start --watch auth-service",
     "start:dev:user-service": "nest start --watch user-service",
     "start:dev:all": "concurrently \"npm run start:dev:api-gateway\" \"npm run start:dev:auth-service\" \"npm run start:dev:user-service\"",
+    "db:migrate": "prisma migrate dev",
+    "db:generate": "prisma generate",
+    "db:seed": "ts-node libs/database/prisma/seeds/seed.ts",
+    "db:studio": "prisma studio",
     "start:debug": "nest start --debug --watch",
     "start:prod": "node dist/apps/centralized-authentication-in-nest-js-microservices/main",
     "lint": "eslint \"{src,apps,libs,test}/**/*.ts\" --fix",
@@ -28,6 +32,7 @@
     "@nestjs/config": "^4.0.2",
     "@nestjs/core": "^11.0.1",
     "@nestjs/platform-express": "^11.0.1",
+    "@prisma/client": "^6.15.0",
     "class-transformer": "^0.5.1",
     "class-validator": "^0.14.2",
     "reflect-metadata": "^0.2.2",
@@ -51,6 +56,7 @@
     "globals": "^16.0.0",
     "jest": "^29.7.0",
     "prettier": "^3.4.2",
+    "prisma": "^6.15.0",
     "source-map-support": "^0.5.21",
     "supertest": "^7.0.0",
     "ts-jest": "^29.2.5",
@@ -77,7 +83,12 @@
     "coverageDirectory": "./coverage",
     "testEnvironment": "node",
     "roots": [
-      "<rootDir>/apps/"
-    ]
+      "<rootDir>/apps/",
+      "<rootDir>/libs/"
+    ],
+    "moduleNameMapper": {
+      "^@app/common(|/.*)$": "<rootDir>/libs/common/src/$1",
+      "^@app/database(|/.*)$": "<rootDir>/libs/database/src/$1"
+    }
   }
 }
