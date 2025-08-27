@@ -9,4 +9,5 @@ export abstract class BaseRepository<T, CreateInput, UpdateInput> {
   abstract update(id: string, data: UpdateInput): Promise<T>;
   abstract delete(id: string): Promise<T>;
   abstract findMany(options?: any): Promise<T[]>;
+  // abstract findByEmail(email: string): Promise<T>;
 }

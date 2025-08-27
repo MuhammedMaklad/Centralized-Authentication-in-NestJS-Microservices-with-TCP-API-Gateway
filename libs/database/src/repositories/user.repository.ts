@@ -28,4 +28,8 @@ export class UserRepository extends BaseRepository<User, Prisma.UserCreateInput,
     return this.prisma.user.findMany(options);
   }
 
+  async findByEmail(email: string): Promise<User | null> {
+    return this.prisma.user.findFirst({ where: { email } });
+  }
+
 }
