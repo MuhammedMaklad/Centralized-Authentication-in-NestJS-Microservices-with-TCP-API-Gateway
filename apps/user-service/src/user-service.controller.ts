@@ -9,7 +9,7 @@ import { MessagePattern, Payload } from '@nestjs/microservices';
 export class UserServiceController {
   constructor(private readonly userService: UserService) { }
 
-  @Post()
+  @Post("create-user")
   async create(@Body() createUserDto: CreateUserDto): Promise<UserResponseDto> {
     const user = await this.userService.create(createUserDto);
     return new UserResponseDto(user);
@@ -19,6 +19,11 @@ export class UserServiceController {
   async findOne(@Param('id') id: string): Promise<UserResponseDto> {
     const user = await this.userService.findOne(id);
     return new UserResponseDto(user);
+  }
+
+  @Get('all')
+  async findAll() {
+    return await this.userService.findAllUsers();
   }
 
   // microservice endpoints

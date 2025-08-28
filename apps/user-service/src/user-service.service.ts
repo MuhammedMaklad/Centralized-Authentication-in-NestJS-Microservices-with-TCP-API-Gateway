@@ -1,9 +1,10 @@
 import { ConflictException, Injectable, NotFoundException } from '@nestjs/common';
-import { UserRepository } from '../../../libs/database/src/repositories/user.repository';
 import { CreateUserDto } from './dtos/create-user.dto';
 import { UserResponseDto } from './dtos/user-response.dto';
 import { PasswordUtils } from './utils/password.uitls';
 import { plainToClass } from 'class-transformer';
+import { UserRepository } from './repositories/user.repository';
+import { User } from '@prisma/client';
 
 @Injectable()
 export class UserService {
@@ -42,6 +43,11 @@ export class UserService {
       return null;
     }
     return plainToClass(UserResponseDto, user, { excludeExtraneousValues: true });
+  }
+
+  async findAllUsers(): Promise<User[]> {
+    const users = await this.userRepository.findMany();
+    return users;
   }
 
   async validateUser(email: string, password: string): Promise<UserResponseDto | null> {

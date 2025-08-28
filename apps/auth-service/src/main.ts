@@ -1,18 +1,18 @@
 import { NestFactory } from '@nestjs/core';
 import { AuthServiceModule } from './auth-service.module';
-import { GLOBAL_PREFIX } from './constant/main';
 import { Logger } from '@nestjs/common';
+import { MicroserviceOptions, Transport } from '@nestjs/microservices';
 
 async function bootstrap() {
-  const app = await NestFactory.create(AuthServiceModule);
+  const app = await NestFactory.createMicroservice<MicroserviceOptions>(AuthServiceModule, {
+    transport: Transport.TCP,
+    options: {
+      host: "localhost",
+      port: 3000,
+    }
+  });
 
-  //! set prefix for auto-service 
-  app.setGlobalPrefix(GLOBAL_PREFIX);
-
-  // ! get port of service 
-  const port = process.env.PORT ?? 3000;
-  await app.listen(port);
-
-  Logger.log(`Auth Service is Running on Port http://localhost:3001/api/${port}`);
+  await app.listen();
+  Logger.log(`Auth Microservice is running TCP Port [3000]`);
 }
 bootstrap().catch(e => Logger.error(`Error While Bootstrap auth service ${e}`));
